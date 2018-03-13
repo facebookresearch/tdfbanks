@@ -96,12 +96,10 @@ class TDFbanks(nn.Module):
             x = self.preemp(x)
         # Complex convolution
         x = self.complex_conv(x)
-        # Modulus operator
+        # Squared modulus operator
         x = x.transpose(1, 2)
-        x = self.modulus(x)
+        x = F.avg_pool1d(x.pow(2), 2, 2, 0, False).mul(2)
         x = x.transpose(1, 2)
-        # Square
-        x = x.pow(2)
         x = self.lowpass(x)
         x = x.abs()
         x = x + 1
