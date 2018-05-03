@@ -19,22 +19,22 @@ class Gabor(object):
                  wstride=10,
                  nfft=512,
                  normalize_energy=False):
-            if not nfilters > 0:
-                raise(Exception,
-                'Number of filters must be positive, not {0:%d}'.format(nfilters))
-            if max_freq > fs // 2:
-                raise(Exception,
-                'Upper frequency %f exceeds Nyquist %f' % (max_freq, fs // 2))
-            self.nfilters = nfilters
-            self.min_freq = min_freq
-            self.max_freq = max_freq
-            self.fs = fs
-            self.wlen = wlen
-            self.wstride = wstride
-            self.nfft = nfft
-            self.normalize_energy = normalize_energy
-            self._build_mels()
-            self._build_gabors()
+        if not nfilters > 0:
+            raise(Exception,
+                  'Number of filters must be positive, not {0:%d}'.format(nfilters))
+        if max_freq > fs // 2:
+            raise(Exception,
+                  'Upper frequency %f exceeds Nyquist %f' % (max_freq, fs // 2))
+        self.nfilters = nfilters
+        self.min_freq = min_freq
+        self.max_freq = max_freq
+        self.fs = fs
+        self.wlen = wlen
+        self.wstride = wstride
+        self.nfft = nfft
+        self.normalize_energy = normalize_energy
+        self._build_mels()
+        self._build_gabors()
 
     def _hz2mel(self, f):
         # Converts a frequency in hertz to mel
@@ -50,7 +50,7 @@ class Gabor(object):
 
         def gabor_function(t):
             return (1 / (np.sqrt(2 * np.pi) * sigma)) * np.exp(1j * eta * t) * np.exp(-t**2/(2 * sigma**2))
-        return np.asarray([gabor_function(t) for t in np.arange(-T/2,T/2 + 1)])
+        return np.asarray([gabor_function(t) for t in np.arange(-T/2, T/2 + 1)])
 
     def _gabor_params_from_mel(self, mel_filter):
         # Parameters in radians
@@ -60,7 +60,7 @@ class Gabor(object):
         peak = mel_filter[center_frequency]
         half_magnitude = peak/2.0
         spread = np.where(mel_filter >= half_magnitude)[0]
-        width = max(spread[-1] - spread[0],1)
+        width = max(spread[-1] - spread[0], 1)
         return center_frequency*2*np.pi/self.nfft, coeff/(np.pi*width)
 
     def _melfilter_energy(self, mel_filter):
