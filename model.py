@@ -35,10 +35,10 @@ class TDFbanks(nn.Module):
         if preemp:
             self.preemp = nn.Conv1d(1, 1, 2, 1, padding=1, groups=1, bias=False)
         self.complex_conv = nn.Conv1d(1, 2 * nfilters, window_size, 1,
-            padding=padding_size, groups=1, bias=False)
+                                      padding=padding_size, groups=1, bias=False)
         self.modulus = nn.LPPool1d(2, 2, stride=2)
         self.lowpass = nn.Conv1d(nfilters, nfilters, window_size, window_stride,
-            padding=0, groups=nfilters, bias=False)
+                                 padding=0, groups=nfilters, bias=False)
         if mode == 'Fixed':
             for param in self.parameters():
                 param.requires_grad = False
@@ -54,7 +54,6 @@ class TDFbanks(nn.Module):
         self.wstride = wstride
         self.compression = compression
         self.mvn = mvn
-
 
     def initialize(self,
                    min_freq=0,
